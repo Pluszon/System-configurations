@@ -1,0 +1,62 @@
+#!/bin/bash
+ 
+# Setup:
+# =======================================
+# cd ~/Dropbox/wordpress/ && vi backup.sh
+# chmod + backup.sh
+# crontab -e (vim basic)
+# Every Friday at Midnight: 0 0 * * 5 /root/Dropbox/wordpress/backup.sh
+# set -x
+ 
+# set limit of backup files to keep (NB: Two files are created on each run).
+MAX=10
+ 
+# set database settings.
+DBUSER="xbmc"
+ 
+# set backup directory
+DEST="/storage/Backup/XBMC/Mysql"
+ 
+# bin paths (define if cannot be auto-detected via which command)
+MYSQLDUMP="$(which mysqldump)"
+GZIP="$(which gzip)"
+TAR="$(which tar)"
+ 
+# set date format
+NOW="$(date +"%Y%m%d_%H%M")"
+ 
+# set hostname
+HOST="$(hostname)"
+ 
+# set database filename
+DBFILE="$DEST/$NOW.database.gz"
+ 
+# set number of backup files.
+COUNT=$(find $DEST -iname \*.gz | wc -l)
+ 
+# set difference from max.
+DIFF="$((COUNT-MAX))"
+ 
+# if over limit ...
+if [ $DIFF -gt 0 ]
+then
+ 
+ # loop over remove difference.
+ for f in $DEST/*gz; do
+  i="$((DIFF-=1))";
+  #echo "$i: $f";
+  rm "$f";
+ 
+  # stop if reach zero.
+  if [ $i -eq 0 ]; then 
+   break;
+  fi 
+ done 
+fi
+ 
+# create database backup file.
+# $MYSQLDUMP -u $DBUSER -h $DBHOST -p$DBPASS $DBNAME | $GZIP -9 > $DBFILE
+$MYSQLDUMP -u $DBUSER --all-databases | $GZIP -9 > $DBFILE
+
+# Put backup to MEGA
+megaput --no-progress --path /Root/Backup $DBFILE

@@ -1,0 +1,5 @@
+#!/bin/sh
+# 
+# Updates Dropbox permission so Samba shares are accessible in RW mode
+
+chown nobody:nogroup /storage/Docs/Dropbox -R
