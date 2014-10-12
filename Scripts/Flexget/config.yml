@@ -1,0 +1,285 @@
+templates:
+  global:
+    email:
+      from: email@gmail.com
+      to:
+        - email@mail.com
+      smtp_host: smtp.gmail.com
+      smtp_port: 587
+      smtp_login: true
+      smtp_username: <put_username_here>
+      smtp_password: <put_password_here>
+      smtp_tls: true
+    transmission:
+      host: 192.168.0.118
+      port: 8888
+      username: <put_username_here>
+      password: <put_password_here>
+    clean_transmission:
+      host: 192.168.0.118
+      port: 8888
+      username: <put_username_here>
+      password: <put_password_here>
+      min_ratio: 1
+      
+    # Most of these are the results of problem torrents I kept seeing still pop up, so I wholesale blocked them
+    # RegExr (http://www.gskinner.com/RegExr/) is a great tool for testing regexes
+    regexp:
+      reject:
+        - (d)ub(s|bed)?\b: {from: title} # Block any subbed/dubbed/etc videos
+        - \b(I|i)ndia\b: {from: title}
+        - \b(H|h)indi\b: {from: title}
+        - \b(duo|tri|quadri|tetra|penta)logy\b: {from: title} # Block series, only accept one at a time
+        - \b3-?D\b: {from: title} # I don't have any 3D displays
+        - \bR5\b: {from: title} # The following are poor quality types that somehow got through the quality
+        - \bWEBSCR\b: {from: title} # features usually due to the title including a keyword like "720p" as well
+        - \bscreener\b: {from: title}
+        - \bTS\b: {from: title}
+        - \bCam\b: {from: title}
+        - '{C_P}': {from: title} # The following are groups with poor quality releases
+        - TrTd TeaM: {from: title}
+        - \[TNTVillage\]: {from: title}
+        - \[facepalm\]: {from: title}
+
+    # avoid watched content
+    #crossmatch:
+     # from:
+      #  - imdb_list:
+       #     user_id: ur18001608
+        #    list: ratings
+     # fields:
+      #  - imdb_id
+      #action: reject
+    
+    # Limit the frequency of requests to domains so they don't complain about using a bot
+    domain_delay:
+      #torrentz.eu: 2 seconds
+      bt-chat.com: 15 seconds
+      torrentz.eu: 15 seconds
+      kat.ph: 15 seconds
+      ezrss.it: 15 seconds
+      h33t.com: 15 seconds
+      torlock.com: 15 seconds
+      tokyotosho.info: 15 seconds
+      nyaa.eu: 15 seconds
+
+  #
+  # TV-Global Preset
+  #
+  tv-global:
+    inputs:
+      #- rss: http://www.ezrss.it/search/index.php?show_name=Bones&date=&quality=720P&release_group=&mode=rss
+      #- rss: http://www.ezrss.it/search/index.php?simple&show_name=Breaking+Bad&mode=rss
+      #- rss: http://www.ezrss.it/search/index.php?show_name=House&date=&quality=720P&release_group=&mode=rss
+      #- rss: http://www.ezrss.it/search/index.php?simple&show_name=Californication&mode=rss
+      #- rss: http://www.ezrss.it/search/index.php?show_name=Office&date=&quality=&release_group=&episode_title=&season=8&episode=&video_format=&audio_format=&modifier=&mode=rss
+      #- rss: http://www.ezrss.it/search/index.php?simple&show_name=it+crowd&mode=rss
+      - rss: http://www.ezrss.it/feed/
+      - rss: http://feeds.feedburner.com/eztv-rss-atom-feeds?format=xml
+      #- rss: http://www.ezrss.it/search/index.php?show_name=Top+Gear&date=&quality=&release_group=&mode=rss
+      #- rss: http://ezrss.it/search/index.php?show_name=two+and+a+half&date=&quality=&release_group=&episode_title=&season=9&episode=&video_format=&audio_format=&modifier=&mode=rss    
+      #- rss: http://www.ezrss.it/search/index.php?show_name=Dexter&date=&quality=720p&release_group=&episode_title=&season=7&episode=&video_format=&audio_format=&modifier=&mode=rss
+      #- rss: http://www.ezrss.it/search/index.php?&show_name=Desperate+Housewives&mode=rss
+      #- rss: http://static.demonoid.me/rss/3.xml # Demonoid (All TV)
+      - rss: http://www.torlock.com/television/rss.xml # TorLock (TV)
+      #- rss: http://torrentz.eu/feed_verified?q=tv # Torrentz (Verified only, TV)
+      - rss: http://showrss.karmorra.info/feeds/all.rss # Karmorra (All)
+      - rss: http://showrss.karmorra.info/feeds/6.rss
+      - rss: http://rss.bt-chat.com/?group=3 # BT-Chat (EZTV)
+      - rss: http://rss.thepiratebay.org/208 # The Pirate Bay (Highres - TV shows)
+    exists_series:
+      path:
+        - /mnt/Storage/Video/Series/
+
+      allow_different_qualities: no
+    #transmission:
+    set:
+      # Migration to PI
+      #path: /mnt/hgfs/HTPC_E/_seriale/%(series_name)s/Season %(series_season).02d
+      path: /mnt/Storage/Video/Series/%(series_name)s/Season %(series_season).02d
+
+  #
+  # TV Preset
+  #
+  tv-my_shows:
+    include: [ series.yml ]
+
+  #
+  # Movies-Global Preset
+  #
+  movies-global:
+    inputs:
+      # - rss: http://static.demonoid.me/rss/1.xml # Demonoid (All Movies)
+      - rss: http://www.torlock.com/movies/rss.xml # TorLock (Movies)
+      #- rss: http://torrentz.eu/feed_verified?q=movies # Torrentz (Verified Movies)
+      - rss: http://rss.thepiratebay.org/207 # The Pirate Bay (Highres - Movies)
+      - rss: http://www.vcdq.com/browse/rss/1/0/3_2/10_9_21_22_23_24_6_28_32_19_11_3_2/0/2011_2012/0
+      - rss: https://isohunt.com/js/rss/jaybob?iht=-1
+    
+    # Some feeds might include TV Shows, ignore them
+    regexp:
+      reject:
+        - s\d+e\d+: {from: title}
+        - '\d{4}.\d{2}.\d{2}': {from: title}
+        - \d+x\d+: {from: title}
+    
+    # Force proper_movies to run after regexp to avoid unnecessary imdb_lookup
+    plugin_priority:
+      proper_movies: 171
+
+    # Require at least 10 seeds of any torrent    
+    torrent_alive: 10 
+    
+    imdb_lookup: yes
+    seen_movies: strict # Don't download movies we've already seen
+
+    imdb:
+      min_score: 7.8
+      min_votes: 5000
+      min_year: 1990
+      reject_genres:
+        - musical
+        - biography
+      accept_languages:
+        - english # Ensures the movie's primary language is English
+      reject_languages:
+        - hindi
+      reject_mpaa_ratings:
+        - G # No kiddie flicks please
+    
+    # Fields we need to have to be able to filter by
+    require_field:
+      - imdb_genres
+      - imdb_score
+    # This is similar to what is done in tv-premieres, but a bit more complicated.
+    # For example, this will reject any movie that is not only a drama but has a rating lower than 7.5
+    if:
+    #  - imdb_year < 2000 and imdb_score < 7.5: reject                 # Older movies must have higher ratings
+      - imdb_year < 1980 and imdb_score < 8.5: reject                 # Only the best old movies
+    #  - "imdb_genres == ['drama']": reject                            # Reject movies that are only Drama
+    #  - "imdb_genres == ['romance']": reject                          # Or romance
+      - "imdb_genres == ['documentary'] and imdb_score < 8.5": reject # Only really good documentaries please
+    #  - "imdb_genres != None and 'drama' in imdb_genres and imdb_score < 7.5": reject         # More strict policy on certain genres
+    #  - "imdb_genres != None and 'romance' in imdb_genres and imdb_score < 7.5": reject
+    #  - "imdb_genres != None and 'documentary' in imdb_genres and imdb_score < 7.5 ": reject
+    #  - "imdb_genres != None and 'animation' in imdb_genres and imdb_score < 8.0": reject
+    # Check for already downloaded or currently downloading movies
+    exists_movie:
+      - /mnt/Storage/Video/Movies/
+
+    # Download propers, since they will have the same content_filename, lower/non propers will be overwritten
+    #proper_movies: yes
+    
+    set:
+    # Give folders/files nice names
+      # Migration to PI
+      #path: "/mnt/hgfs/HTPC_F/Movies/{{ imdb_name | pathscrub }} ({{ imdb_year }})"
+      path: "/mnt/Storage/Video/Movies/{{ imdb_name | pathscrub }} ({{ imdb_year }})"
+      content_filename: |
+        {{ imdb_name | pathscrub }} ({{ imdb_year }}) - {{ quality }}
+
+
+  # This preset uses the movie queue to download movies
+  #
+  # Movies-queued Preset
+  #
+  movies-queued:
+    movie_queue: yes
+
+
+
+  # This preset runs feeds through my very specific custom filter
+  movies-auto:
+    quality: 720p
+
+
+################################    
+# FEEDS
+################################
+tasks:
+
+  # All of the TV-related feeds pull in the tv-global preset, this gives
+  # all of the necessary rss sources and a few extra configs
+
+  # There are 3 My_TV Shows feeds, the first, tries to get the most wanted qualities
+  My_TV_Shows task:
+    priority: 1
+    template:
+      - tv-global
+      - tv-my_shows
+    series:
+      settings:
+        Best: { quality: 720p }
+        Better: { quality: 720p }
+        Average: { quality: HDTV }
+
+  # If we can't find anything that good after 12 hours, fall back to a lower quality
+  My_TV_Shows-Secondary task:
+    priority: 2
+    template:
+      - tv-global
+      - tv-my_shows
+    series:
+      settings:
+        Best: { quality: 720p }
+        Better: { quality: HDTV }
+        Average: { quality: SDTV }
+    delay: 12 hours  
+
+  My_TV_Shows-Fallback task:
+    priority: 3
+    template:
+      - tv-global
+      - tv-my_shows
+    series:
+      settings:
+        Best: { quality: HDTV }
+        Better: { quality: SDTV }
+        Average: { quality: Preair }
+    delay: 3 days
+
+  # The next two feeds download the queue from the previous feed effectively implementing
+  # a 2 day timeframe for 1080p movies, then falls back to 720p
+  My_Movies-1080p task:
+    priority: 11
+    template:
+      - movies-global
+      - movies-queued
+    quality: 1080p
+
+  My_Movies-720p task:
+    priority: 12
+    template:
+      - movies-global
+      - movies-queued
+    quality: 720p
+    delay: 2 days # Wait 2 days for a 1080p movie before trying downloading 720p
+
+
+
+  # This feed queues all of the movies in my IMDB watchlist
+  IMDB_Movie_Queue task:
+    priority: 10 # Always run before My_Movies feeds
+    template: no_global # None of the global presets make sense here
+    interval: 2 hours # Only check every 2 hours (I have Flexget run every hour)
+    imdb_list:
+      user_id: ur18001608
+      username: email@gmail.com
+      password: <password>
+      list: watchlist
+    accept_all: yes
+    queue_movies: yes 
+
+  Trakt.tv_Movie_Queue task:
+    priority: 9
+    template: no_global
+    interval: 2 hours
+    trakt_list: 
+      username: <username>
+      password: <password>
+      api_key: 8e0e3a2f20f356efbd0be9acb2da0e1f
+      custom: To_Download
+    accept_all: yes
+    queue_movies: yes
+
+

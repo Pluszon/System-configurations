@@ -1,0 +1,41 @@
+series:
+  settings:
+    global:
+      set:
+        content_filename: "%(series_name)s.%(series_id)s.%(quality)s"
+        path: /mnt/Storage/Video/Series/%(series_name)s/Season %(series_season).02d
+      propers: no
+    Average:
+      propers: yes
+
+  Average:
+    - The IT Crowd
+  Better:
+    - Breaking Bad
+    - The Office
+    - Two and a half men
+    - Shameless
+    - Homeland
+    - Cake Boss
+    - The Borgias
+    - Game of Thrones
+    - The Walking Dead
+    - The Originals
+    - Black Mirror
+  Best:
+    - Tron Uprising
+    - The Big Bang Theory
+    - House of cards
+    - Happy Endings
+    - Top Gear
+    - Sherlock
+    - True Blood
+    - Vikings
+    - Banshee:
+        exact: yes
+    - Californication
+    - Bones
+    - Dexter:
+        exact: yes
+    - House:
+        exact: yes
