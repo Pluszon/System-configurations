@@ -1,7 +1,8 @@
 #!/bin/sh
 
 SRC_SCRIPTS_DIR=`pwd`
-SCRIPTS="Transmission/updateXBMCLibrary.sh Transmission/updateTransmissionConfiguration.sh Transmission/restartTorrent.sh"
+SCRIPTS="Transmission/updateXBMCLibrary.sh Transmission/updateTransmissionConfiguration.sh Transmission/restartTorrent.sh \
+XBMC/IBpy.py"
 DEST_SCRIPTS_DIR="/usr/local/bin"
 ME=`basename $0`
 
@@ -15,6 +16,6 @@ fi
 for i in $SCRIPTS; do
   CMD="ln -sf $SRC_SCRIPTS_DIR/$i $DEST_SCRIPTS_DIR/`basename $i`"
   echo $CMD
-  #$CMD
+  $CMD
 done  
 
