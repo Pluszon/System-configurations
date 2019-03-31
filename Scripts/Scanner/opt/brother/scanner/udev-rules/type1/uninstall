@@ -1,0 +1,3 @@
+#! /bin/bash
+rm  /etc/udev/rules.d/60-brother-libsane-type1.rules
+

@@ -1,0 +1,34 @@
+#! /bin/sh
+
+BRSCAN=/opt/brother/scanner/BrotherScanFiles/brscan-skey.bin
+
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+    echo '   no option                :register all MFCs'
+    echo '   -t (--terminate)         :terminate this tool'
+    echo '   -a (--add MFC)           :register the specified MFC'
+    echo '   -d (--delete) MFC        :exclude the specified MFC'
+    echo '   -p (--passwd) PASSWORD   :set the password'
+    echo '   -u (--username) USERNAMR :set the user name'
+    echo '   -l (--list)              :list the available MFCs'
+    echo '   -m (--mailto)            :mail address (scan to e-mail)'  
+    echo '   --refresh                :refresh setting'
+    echo '   --reset                  :reset the configuration file'
+    echo '   --diagnosis              :print diagnosis data'
+    echo '   -h --help                :help'
+  echo '   Copyright 2007-2012 Brother Industries, Ltd'
+  exit 0
+fi
+
+if [ "$1" = "-l" ] || [ "$1" = "--list" ]; then
+	$BRSCAN $*
+	exit 0
+fi
+
+
+if [ "$1" = "-f" ];then
+	$BRSCAN $*
+else
+	$BRSCAN $*&
+fi
+
+

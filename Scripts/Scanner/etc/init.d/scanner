@@ -1,0 +1,42 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          brscan
+# Required-Start:
+# Required-Stop:
+# Default-Start:
+# Default-Stop:      6
+# Short-Description: Starts Brother Scanner Key Tool
+# Description: Brother brother
+### END INIT INFO
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+BINARY=/opt/brother/scanner/BrotherScanFiles/brscan-skey
+
+. /lib/lsb/init-functions
+
+do_stop () {
+	$BINARY -t
+}
+
+do_start () {
+	# No-op
+	$BINARY -u NAS_UBUNTU
+	$BINARY
+}
+case "$1" in
+  start)
+	do_start
+	;;
+  restart|reload|force-reload)
+	do_stop
+	sleep 2
+	do_start
+	;;
+  stop)
+	do_stop
+	;;
+  *)
+	echo "Usage: $0 start|stop" >&2
+	exit 3
+	;;
+esac

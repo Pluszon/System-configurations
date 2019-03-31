@@ -1,0 +1,2 @@
+# Brother scanners
+ATTRS{idVendor}=="04f9", ENV{libsane_matched}="yes"

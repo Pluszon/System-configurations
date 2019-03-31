@@ -1,0 +1,38 @@
+#! /bin/bash
+
+if [ "$1" = '-e' ];then
+  if [ -e /opt/brother/scanner/udev-rules/type1/uninstall ];then
+     bash /opt/brother/scanner/udev-rules/type1/uninstall
+     rm   /opt/brother/scanner/udev-rules/type1/uninstall
+  fi
+  exit 0
+fi
+
+libsanerule=$(ls /lib/udev/rules.d/*.rules | \
+    grep libsane | head --line=1)
+number=$(echo $libsanerule | \
+    sed s/"\/lib\/udev\/rules.d\/"//g |\
+    head --bytes=2)
+
+chk=$(echo $number | grep "[0-9][0-9]")
+if [ "$chk" = '' ];then
+   exit -1
+fi
+
+chk=$(grep "ENV{libsane_matched}=\"yes\""  $libsanerule | tail -1)
+if [ "$chk" = '' ];then
+   exit -1
+fi
+
+cp  /opt/brother/scanner/udev-rules/type1/NN-brother-mfp-type1.rules \
+    /etc/udev/rules.d/${number}-brother-libsane-type1.rules
+chmod 644     /etc/udev/rules.d/${number}-brother-libsane-type1.rules
+
+echo "#! /bin/bash"   > /opt/brother/scanner/udev-rules/type1/uninstall
+echo "rm  /etc/udev/rules.d/${number}-brother-libsane-type1.rules" \
+                    >>  /opt/brother/scanner/udev-rules/type1/uninstall
+echo ""             >>  /opt/brother/scanner/udev-rules/type1/uninstall
+
+chmod 755 /opt/brother/scanner/udev-rules/type1/uninstall
+
+exit 0

@@ -1,0 +1,6 @@
+DCPJ315W:\
+        :mx=0:\
+        :sd=/var/spool/lpd/dcpj315w:\
+        :sh:\
+        :lp=/dev/usb/lp0:\
+        :if=/opt/brother/Printers/dcpj315w/lpd/filterdcpj315w:
