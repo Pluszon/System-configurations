@@ -1,0 +1,16 @@
+# Documentation from BROTHER website
+# https://support.brother.com/g/s/id/linux/en/instruction_scn1b.html?c=us_ot&lang=en&redirect=on
+# https://ubuntuforums.org/showthread.php?t=1594558&p=11578647#post11578647
+# https://support.brother.com/g/s/id/linux/en/instruction_scn5.html?c=us_ot&lang=en&comple=on&redirect=on#Inst4
+
+# Output of brsaneconfig3command
+# Devices on network
+#  0 BROTHER             "DCP-J315W"         I:192.168.0.106
+brsaneconfig3 -d
+
+# This doesn't do anything particular
+sane-find-scanner
+
+# Lists all installed drivers
+brscan-skey -l
+
